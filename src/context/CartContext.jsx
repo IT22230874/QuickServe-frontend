@@ -77,6 +77,7 @@ export const CartProvider = ({ children }) => {
         addToCart: handleAdd,
         removeFromCart: handleRemove,
         clearCart: handleClear,
+        fetchCart
       }}
     >
       {children}

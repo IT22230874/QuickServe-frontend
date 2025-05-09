@@ -1,28 +1,48 @@
+// RestaurantPage.js
 import { useEffect, useState } from "react";
-import { useParams, useNavigate  } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { fetchMenu } from "../services/api";
 import FoodItemModal from "../components/FoodItemModal";
+
+// Loading animation component
+const LoadingSpinner = () => (
+  <div className="flex justify-center items-center h-64">
+    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-600"></div>
+  </div>
+);
 
 const RestaurantPage = () => {
   const { id } = useParams();
   const [restaurant, setRestaurant] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchMenu(id).then(setRestaurant);
+    setIsLoading(true);
+    fetchMenu(id)
+      .then(data => {
+        setRestaurant(data);
+        setIsLoading(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setIsLoading(false);
+      });
   }, [id]);
 
-  if (!restaurant) return <p className="p-4">Loading...</p>;
+  if (isLoading) return <LoadingSpinner />;
+  if (!restaurant) return <p className="p-4">Failed to load restaurant data</p>;
 
   return (
     <div className="p-4 max-w-6xl mx-auto">
-            <button
+      <button
         onClick={() => navigate(-1)}
-        className="text-sm mb-4 text-blue-600 hover:underline"
+        className="flex items-center gap-1 text-sm mb-4 text-[#e55103] hover:underline"
       >
-        ← Back
+        ← Back to restaurants
       </button>
+      
       {/* Restaurant Header */}
       <div className="mb-6">
         <img
@@ -52,14 +72,21 @@ const RestaurantPage = () => {
             />
             <div className="p-4">
               <h3 className="text-lg font-semibold">{item.name}</h3>
-              <p className="text-gray-500 text-sm mb-2">{item.description}</p>
-              <p className="text-green-600 font-bold">${item.price.toFixed(2)}</p>
+              <p className="text-gray-500 text-sm mb-2 line-clamp-2">{item.description}</p>
+              <div className="flex justify-between items-center">
+                <p className="text-[#e55103] font-bold">LKR {item.price.toFixed(2)}</p>
+                {item.popular && (
+                  <span className="text-xs bg-orange-100 text-[#e55103] px-2 py-1 rounded">
+                    #1 most liked
+                  </span>
+                )}
+              </div>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Existing Popup Modal */}
+      {/* Food Item Modal */}
       {selectedItem && (
         <FoodItemModal
           foodItem={selectedItem}
