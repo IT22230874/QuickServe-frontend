@@ -13,7 +13,9 @@ const CheckoutDrawer = ({ restaurantId, restaurantGroup, onClose }) => {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          `http://localhost:8082/api/delivery/fee/${restaurantId}`,
+          `${
+            import.meta.env.VITE_APP_API_GET_DELIVERY_CHARGES
+          }/${restaurantId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -29,27 +31,27 @@ const CheckoutDrawer = ({ restaurantId, restaurantGroup, onClose }) => {
     fetchDeliveryCharge();
   }, [restaurantId]);
 
-    // 👉 **Close the drawer if restaurantGroup is empty or undefined**
-    useEffect(() => {
-        if (!restaurantGroup || restaurantGroup.items.length === 0) {
-          onClose();
-          //fetchCart(); // refresh cart
-        }
-      }, [restaurantGroup, onClose]);
-    
-      if (!restaurantGroup) {
-        return null; // don't try to render if data missing
-      }
-    
-      const subtotal = restaurantGroup.items.reduce(
-        (acc, item) => acc + item.price * item.quantity,
-        0
-      );
+  // 👉 **Close the drawer if restaurantGroup is empty or undefined**
+  useEffect(() => {
+    if (!restaurantGroup || restaurantGroup.items.length === 0) {
+      onClose();
+      //fetchCart(); // refresh cart
+    }
+  }, [restaurantGroup, onClose]);
 
-//   const subtotal = restaurantGroup.items.reduce(
-//     (acc, item) => acc + item.price * item.quantity,
-//     0
-//   );
+  if (!restaurantGroup) {
+    return null; // don't try to render if data missing
+  }
+
+  const subtotal = restaurantGroup.items.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
+
+  //   const subtotal = restaurantGroup.items.reduce(
+  //     (acc, item) => acc + item.price * item.quantity,
+  //     0
+  //   );
   const total = subtotal + deliveryCharge;
 
   const handleDecrease = async (itemId) => {
@@ -78,7 +80,6 @@ const CheckoutDrawer = ({ restaurantId, restaurantGroup, onClose }) => {
       },
     });
   };
-
 
   return (
     <div className="fixed top-0 right-0 h-full w-96 bg-white shadow-2xl z-50 transform transition-transform duration-300 rounded-l-2xl overflow-hidden">
@@ -144,12 +145,19 @@ const CheckoutDrawer = ({ restaurantId, restaurantGroup, onClose }) => {
           </div>
           <div className="flex justify-between text-sm">
             <span>Delivery</span>
-            <span>LKR {typeof deliveryCharge === "number" ? deliveryCharge.toFixed(2) : "0.00"}</span>
+            <span>
+              LKR{" "}
+              {typeof deliveryCharge === "number"
+                ? deliveryCharge.toFixed(2)
+                : "0.00"}
+            </span>
           </div>
           <hr className="my-2" />
           <div className="flex justify-between font-bold text-lg">
             <span>Total</span>
-            <span>LKR {typeof total === "number" ? total.toFixed(2) : "0.00"}</span>
+            <span>
+              LKR {typeof total === "number" ? total.toFixed(2) : "0.00"}
+            </span>
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8082/api/location";
+const API_URL = "http://localhost/api/location";
 
 export const saveUserLocation = async (latitude, longitude) => {
   const token = localStorage.getItem("token");

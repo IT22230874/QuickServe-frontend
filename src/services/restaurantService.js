@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8082/orders/restaurants/";
+const API_URL = "http://localhost/orders/restaurants/";
 
 export const getRestaurantById = async (restaurantId) => {
     const response = await fetch(`${API_URL}/{restaurantId}`);

@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8081"; // user-service
+const BASE_URL = "http://localhost"; // user-service
 
 export const register = async (data) => {
   const res = await fetch(`${BASE_URL}/auth/register`, {

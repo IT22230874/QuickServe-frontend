@@ -1,13 +1,16 @@
-const ORDER_BASE_URL = 'http://localhost:8082';
-const RESTAURANT_BASE_URL = 'http://localhost:8083';
+const ORDER_BASE_URL = 'http://localhost';
+const RESTAURANT_BASE_URL = 'http://localhost:8081';
 
 export const fetchRestaurants = async () => {
-  const res = await fetch(`${RESTAURANT_BASE_URL}/restaurants`);
+  const res = await fetch(`${ORDER_BASE_URL}/orders/restaurants`);
   return res.json();
 };
 
 export const fetchMenu = async (restaurantId) => {
-  const res = await fetch(`${RESTAURANT_BASE_URL}/restaurants/${restaurantId}`);
+  const token = localStorage.getItem('token');
+  const res = await fetch(`${ORDER_BASE_URL}/orders/restaurants/${restaurantId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
   return res.json();
 };
 

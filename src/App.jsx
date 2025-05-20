@@ -7,7 +7,7 @@ import MainLayout from "./layouts/MainLayout";
 import CheckoutPage from "./pages/CheckoutPage";
 import OAuth2Success from "./components/OAuth2Success";
 import OrdersPage from "./pages/OrdersPage";
-
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
   return (
@@ -34,10 +34,24 @@ function App() {
             </MainLayout>
           }
         />
+        <Route
+          path="/profile"
+          element={
+            <MainLayout>
+              <ProfilePage />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/orders"
+          element={
+            <MainLayout>
+              <OrdersPage />
+            </MainLayout>
+          }
+        />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/oauth2/success" element={<OAuth2Success />} />
-        <Route path="/orders" element={<OrdersPage />} />
-
       </Routes>
     </Router>
   );

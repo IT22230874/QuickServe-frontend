@@ -1,5 +1,5 @@
 // src/services/cartService.js
-const CART_BASE_URL = "http://localhost:8082/cart";
+const CART_BASE_URL = "http://localhost/cart";
 
 export const getCart = async () => {
   const token = localStorage.getItem("token");
